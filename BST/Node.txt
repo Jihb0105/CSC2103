@@ -1,0 +1,84 @@
+public class Node
+{
+  	private int key;
+	private Node parent = null;
+	private Node leftChild = null;
+	private Node rightChild = null;
+
+	public Node(int k)
+	{
+		setKey(k);
+	}
+
+	public void setKey(int k)
+	{
+		key = k;
+	}
+
+    public void setParent(Node node)
+    {
+        parent = node;
+    }
+
+	public void setLeftChild(Node node)
+	{
+		leftChild = node;
+	}
+
+	public void setRightChild(Node node)
+	{
+		rightChild = node;
+	}
+
+	public int getKey()
+	{
+		return key;
+	}
+
+    public Node getParent()
+    {
+        return parent;
+    }
+
+	public Node getLeftChild()
+	{
+		return leftChild;
+	}
+
+	public Node getRightChild()
+	{
+		return rightChild;
+	}
+
+	public boolean isLeaf()
+	{
+		return (getLeftChild() == null && getRightChild() == null);
+	}
+    
+	//insert method 
+    public void insertRec(int k)
+	{
+		if (k < getKey()) 
+		{
+			if (getLeftChild() == null)
+			{
+				setLeftChild(new Node(k));
+				getLeftChild().setParent(this);
+			}
+			else
+				getLeftChild().insertRec(k);
+		}
+
+		else if (k > getKey())
+		{
+			if (getRightChild() == null)
+			{
+				setRightChild(new Node(k));
+				getRightChild().setParent(this);
+			}
+
+			else
+				getRightChild().insertRec(k);
+		}
+    }
+}

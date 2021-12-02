@@ -1,0 +1,186 @@
+public class BST
+{
+    private Node root;
+
+	//constructor
+	public BST()
+	{
+		setRoot(null);
+	}
+
+    public void insert(int k) //Calling the insert method in Node.java
+	{
+		if (getRoot() == null)
+		{
+			setRoot(new Node(k));
+			System.out.println(k + " inserted");
+		}
+		else if (!search(k))
+		{
+            getRoot().insertRec(k);
+			System.out.println(k + " inserted");
+		}
+		else
+			System.out.println(k + " already exists");
+    }
+
+    public void delete(int k) //Delete method
+	{
+		if (search(k))
+		{
+			setRoot(deleteRec(getRoot(), k));
+			System.out.println(k + " deleted");
+		}
+		else
+			System.out.println(k + " not found!");
+	}
+	
+    // Recursive function to delete a key into a BST
+	public Node deleteRec(Node r , int k) 
+	{
+		if (r == null)
+			return null;
+		else 
+		{
+			if (k < r.getKey()) 
+				r.setLeftChild(deleteRec(r.getLeftChild(), k));
+			
+			else if (k > r.getKey()) 
+				r.setRightChild(deleteRec(r.getRightChild(), k));
+		
+			else 
+			{
+				//Case 1: No Child
+				if (r.isLeaf()) 
+					return null;
+			
+				//Case 2: One Child
+				else if (r.getLeftChild() == null) 
+				{
+					return r.getRightChild();
+				}
+				else if (r.getRightChild() == null) 
+				{
+					return r.getLeftChild();
+				}
+			
+				//Case 3: 2 Children
+				else 
+				{
+					int minKey = minNode(r.getRightChild()).getKey();
+					r.setKey(minKey);
+					r.setRightChild(deleteRec(r.getRightChild(), minKey));
+				}	
+			}
+		}
+		return r;
+	}
+
+    //finding minimum value
+	public Node minNode(Node r) {
+		if(r.getLeftChild() != null)
+			return minNode(r.getLeftChild());
+		else
+			return r;
+	}
+
+	public void setRoot(Node r)
+	{
+		root = r;
+	}
+
+	public Node getRoot()
+	{
+		return root;
+	}
+
+	public Node getActualNodeOf(Node r, int k)
+	{
+		if (k == r.getKey())
+			return r;
+		else if (k < r.getKey())
+			return getActualNodeOf(r.getLeftChild(), k);
+		else if (k > r.getKey())
+			return getActualNodeOf(r.getRightChild(), k);
+		else
+			return null;
+	}
+
+    //searching node method
+	public boolean search(int k)
+	{
+		return searchRec(getRoot(), k);
+	}
+    //searching node recursive function
+	public boolean searchRec(Node r, int k)
+	{
+		if (r == null)
+			return false;
+		if (k == r.getKey())
+			return true;
+		else if (k < r.getKey())
+			return searchRec(r.getLeftChild(), k);
+		else
+			return searchRec(r.getRightChild(), k);
+	}
+    //Search found or not found message method
+    public void searchMessage(int k)
+	{
+		if (search(k) == true)
+			System.out.println(k + " found!");
+		else
+			System.out.println(k + " does not exist");	
+	}
+
+    //inOrder Traversal
+    public void inOrder()
+	{
+        inOrderRec(root);
+		System.out.println();
+    }
+    //inOrder recursive function
+    public void inOrderRec(Node n)
+	{
+        if ( n != null )
+		{
+			inOrderRec(n.getLeftChild());
+			System.out.print(n.getKey() + " ");
+			inOrderRec(n.getRightChild());
+        }
+    }
+
+    //preOrder Traversal
+    public void preOrder()
+	{
+        preOrderRec(root);
+		System.out.println();
+    }
+    //preOrder recursive function
+    public void preOrderRec(Node n)
+	{
+        if (n != null)
+		{
+			System.out.print(n.getKey() + " ");
+			preOrderRec(n.getLeftChild());
+			preOrderRec(n.getRightChild());
+        }
+    }
+
+    //postOrder Traversal
+    public void postOrder()
+	{
+        postOrderRec(root);
+		System.out.println();
+    }
+    //postOrder recursive function
+    public void postOrderRec(Node n)
+	{
+        if (n != null)
+		{
+			postOrderRec(n.getLeftChild());
+			postOrderRec(n.getRightChild());
+			System.out.print(n.getKey() + " ");
+        }
+    }
+}
+

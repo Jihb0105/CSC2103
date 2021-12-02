@@ -1,0 +1,70 @@
+import java.util.Scanner;
+
+class Main {
+  	public static void main(String[] args)
+	{
+		BST tree = new BST();
+		Scanner input = new Scanner(System.in);
+		System.out.println("\nType the following keywords to interact with the tree:\n"
+					     + "\n- insert <int>	-> 	Inserts a new integer node into the BST"
+					     + "\n- delete <int>	-> 	Deletes an existing integer node from the BST"
+					     + "\n- search <int>	-> 	Determines whether an integer node exists in the BST"
+					     + "\n- preorder		-> 	Displays the integer nodes in the pre-order form"
+					     + "\n- inorder		-> 	Displays the integer nodes in the in-order form"
+					     + "\n- postorder		-> 	Displays the integer nodes in the post-order form"
+					     + "\n- exit			-> 	Exits the program");
+
+		boolean hasExited = false;
+		while (!hasExited)
+		{
+			System.out.println();
+			String[] instructionArgs = input.nextLine().strip().split("\\s+");
+
+			switch (instructionArgs[0])
+			{
+				case "insert":
+					if (instructionArgs.length >= 2)
+						tree.insert(Integer.parseInt(instructionArgs[1]));
+					else
+					{
+						System.out.println("Error: requires second integer argument");
+					}
+					break;
+				case "delete":
+					if (instructionArgs.length >= 2)
+						tree.delete(Integer.parseInt(instructionArgs[1]));
+					else
+					{
+						System.out.println("Error: requires second integer argument");
+					}
+					break;
+				case "search":
+					if (instructionArgs.length >= 2)
+						tree.searchMessage(Integer.parseInt(instructionArgs[1]));
+					else
+					{
+						System.out.println("Error: requires second integer argument");
+					}
+					break;
+				case "preorder":
+					tree.preOrder();
+					break;
+				case "inorder":
+					tree.inOrder();
+					break;
+				case "postorder":
+					tree.postOrder();
+					break;
+				case "exit":
+					hasExited = true;
+					System.out.println("Application exited");
+					break;
+				default:
+					System.out.println("Command \"" + instructionArgs[0] + "\" not found");
+					break;
+			}
+		}
+		input.close();
+	}
+}
+

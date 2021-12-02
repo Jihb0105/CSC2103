@@ -1,0 +1,62 @@
+ import java.util.Scanner;
+
+class Main
+{
+	public static void main(String[] args)
+	{
+	
+		HashTable hashTable = new HashTable(7);
+		
+		Scanner input = new Scanner(System.in);
+		HashTable.showHelp();
+
+		boolean hasExited = false;
+		while (!hasExited)
+		{
+			System.out.println();
+			String[] instructionArgs = input.nextLine().strip().split("\\s+");		
+
+			switch (instructionArgs[0])
+			{
+				case "insert":
+					if (instructionArgs.length >= 2)
+						hashTable.insert(instructionArgs[1]);
+					else
+					{
+						System.out.println("Error: requires second String argument");
+					}
+					break;
+				case "delete":
+					if (instructionArgs.length >= 2)
+						hashTable.delete(instructionArgs[1]);
+					else
+					{
+						System.out.println("Error: requires second String argument");
+					}
+					break;
+				case "where":
+					if (instructionArgs.length >= 2)
+						hashTable.where(instructionArgs[1]);
+					else
+					{
+						System.out.println("Error: requires second String argument");
+					}
+					break;
+				case "show":
+					hashTable.show();
+					break;
+				case "help":
+					HashTable.showHelp();
+					break;
+				case "exit":
+					hasExited = true;
+					System.out.println("Application exited");
+					break;
+				default:
+					System.out.println("Command \"" + instructionArgs[0] + "\" not found");
+					break;
+			}
+		}
+		input.close();
+	}
+}

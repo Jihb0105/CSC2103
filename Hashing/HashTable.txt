@@ -1,0 +1,135 @@
+import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class HashTable
+{
+	private int size;
+	private ArrayList<LinkedList<String>> table;
+
+	public static void showHelp()
+	{
+		System.out.println("\nType the following keywords to interact with the tree:\n"
+					     + "\n- insert <word>	-> 	Inserts a new String into the HashTable"
+					     + "\n- delete <word>	-> 	Deletes an existing String from the HashTable"
+					     + "\n- where <word>	-> 	Displays the location of a word in the HashTable"
+						 + "\n- show			->	Displays the entire HashTable"
+						 + "\n- help			->	Displays this instruction page"
+					     + "\n- exit			-> 	Exits the program");
+	}
+
+	public HashTable(int s)
+	{
+		size = s;
+        table = new ArrayList<LinkedList<String>>();
+		initTable();
+	}
+
+	public void initTable()
+	{
+		for (int i = 0; i < getSize(); i++)
+		{
+			getTable().add(new LinkedList<String>());
+		}
+	}
+
+	public int getSize()
+	{
+		return size;
+	}
+
+	public ArrayList<LinkedList<String>> getTable()
+	{
+		return table;
+	}
+
+	public LinkedList<String> getList(int idx)
+	{
+		return getTable().get(idx);
+	}
+
+	public int hashFunc(String word)
+	{
+		word = word.trim();
+
+		int sum = 0;
+
+		for (int i = 0; i < word.length(); i++)
+			//they turn into unicodes
+			sum += (int) word.charAt(i);
+
+		//int div
+		int res = sum * word.length();
+
+		return res % getSize();
+	}
+
+	public void insert(String word)
+	{
+		if (!doesExist(word))
+		{
+			getList(hashFunc(word)).add(word);
+			System.out.println(word + " inserted!");
+		}
+		else
+			System.out.println(word + " already exists!");
+	}
+
+    public void delete(String word)
+	{
+		if (doesExist(word))
+		{
+			getList(hashFunc(word)).remove(word);
+			System.out.println(word + " removed from table!");
+		}
+		else
+			System.out.println(word + " does not exist!");
+	}
+
+	public boolean doesExist(String word)
+	{
+		return getList(hashFunc(word)).contains(word);
+	}
+
+	public int[] coordinates(String word)
+	{
+		int hashedIdx = hashFunc(word);
+		int wordIdx = getList(hashedIdx).indexOf(word);
+		int[] coords = {hashedIdx, wordIdx};
+
+		return coords;
+	}
+
+	public void where(String word)
+	{
+
+		if (doesExist(word))
+		{
+			int[] coords = coordinates(word);
+			System.out.println(word + " is in List " + (Integer.toString(coords[0]) + 1) + 
+            " Index " + Integer.toString(coords[1]));
+		}
+		else
+			System.out.println(word + " does not exist!");
+	}
+
+	//displays the hash table →
+	public void show()
+	{
+		System.out.println();
+		for (int i = 0; i < getSize(); i++)
+		{
+			LinkedList<String> list = getTable().get(i);
+			Iterator iterator = list.iterator();
+
+			System.out.print("List " + i + "\t: ");
+			for (String word : list)
+			{
+				System.out.print(iterator.next());
+				if (iterator.hasNext())
+					System.out.print(" → ");
+			}
+			System.out.println();
+		}
+	}
+}
